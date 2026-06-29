@@ -32,7 +32,8 @@ If no code is found, STOP and tell the user there's nothing to audit.
 You MUST invoke the following skills:  
   
 1. `code-audit` — Static analysis of code quality, TypeScript errors, missing imports, invalid markup, Astro/React issues  
-2. `visual-qa` — Visual and UX review against web interface guidelines, accessibility standards, and design compliance  
+2. `visual-qa` — Visual and UX review against web interface guidelines, accessibility standards, and design compliance
+You do NOT have `fix-apply`. Fixing is handled by the `fix-applier` agent.
   
 Both skills can run independently. Order does not matter.  
   
@@ -147,8 +148,8 @@ Review against web interface guidelines and accessibility standards:
 
 ### Completion  
   
-Once all audits are complete and all fixes are applied, run `npm run build` to verify zero errors, write the resolution reports, and stop.  
-Do NOT proceed to redesign, restructure, or enhance components visually. Your job is to find and fix issues, not to improve the design.  
+Once all audits are complete and `qa-report.md` is generated, stop.  
+Do NOT fix, edit, or modify any project file. Do NOT proceed to redesign, restructure, or enhance components visually. Your only job is to find issues and report them. The next agent in the pipeline (`fix-applier`) will handle all fixes.  
   
 ## Output  
   
@@ -193,7 +194,7 @@ Passed Checks
   
 ## Rules  
   
-1. **Do NOT fix anything.** Report only. Your `edit` permission is `deny` for a reason.  
+1. **Do NOT fix anything.** Report only. Your `edit` permission is `deny` for a reason. Every issue in `qa-report.md` must include enough context (file, line, current code, expected code) for the `fix-applier` agent to apply the fix without asking questions. 
 2. **Every issue needs a file:line reference.** No vague "somewhere in the hero component" — give exact locations.  
 3. **Severity must be justified.** Critical = breaks functionality or fails accessibility law. Major = significant UX/visual degradation. Minor = suboptimal but functional. Warning = best practice suggestion.  
 4. **Data integrity is critical severity.** If the page shows different text than the research document, that's critical — it means the page is lying about the business.  
@@ -202,4 +203,4 @@ Passed Checks
 7. **Check the research document.** Every piece of business data on the page must trace back to the research file. If it doesn't exist there, flag it.  
 8. **Anti-pattern: wall of minor issues.** If you have 50+ minor issues, you're being too granular. Group related minors together.  
 9. **The report must be actionable.** Another agent (or human) should be able to take this report and fix every issue without asking clarifying questions.
-10. **Scope boundary.** This agent ONLY performs code auditing, accessibility/performance auditing, and fix application. It does NOT research businesses, build projects, or enhance visual design. Those belong to previous agents in the pipeline. If you find yourself planning research, build, or enhancement phases, stop immediately. You have exactly 3 skills: `code-audit`, `perf-a11y`, `fix-apply`.
+10. **Scope boundary.** This agent ONLY performs code auditing, accessibility/performance auditing, and fix application. It does NOT research businesses, build projects, or enhance visual design. Those belong to previous agents in the pipeline. If you find yourself planning research, build, or enhancement phases, stop immediately. You have exactly 2 skills: `code-audit`, `visual-qa`.
