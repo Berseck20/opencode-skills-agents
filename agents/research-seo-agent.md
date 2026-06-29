@@ -83,7 +83,8 @@ Using the extracted data, determine:
   - `Precision` — medical, legal, financial, tech  
   - `Warmth` — family services, childcare, pet care, home services  
   - `Authority` — construction, roofing, industrial, B2B  
-  - `Energy` — fitness, entertainment, food, nightlife  
+  - `Energy` — fitness, entertainment, food, nightlife
+- **Layout Variant ID** — Select one structural variant from `visual-system` → Structural layout variants table, matching the assigned profile. Two landings in the same niche MUST use different variant IDs. Record the ID (e.g., `W-story`, `P-split`, `A-impact`, `E-dynamic`) in research output section 15.  
   
 Cross-reference niche classification with `design-database`:  
 - `industry-reasoning.md` — Validate industry reasoning  
@@ -152,7 +153,7 @@ Research Document: [Business Name]
 12. Competitor Signals
 13. Niche Classification
 14. Market Analysis
-15. Visual Profile Assignment (with justification)
+15. Visual Profile Assignment + Layout Variant ID (with justification for both)
 16. Design Database Matches
 16a. Color Palette
 16b. Design Style
