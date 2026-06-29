@@ -134,7 +134,27 @@ Energy
 Override rule
 
 If the research data reveals a business that doesn't fit the typical profile for its niche (e.g., a luxury pet spa that should be Precision, not Warmth), justify the override with specific evidence from the extracted data.
-Design database cross-reference
+Design database cross-reference.
+
+### Layout variant selection  
+After assigning the visual profile, select a layout variant from `visual-system` → Structural layout variants for that profile.
+
+| rofile    | Available variants           |
+|-----------|------------------------------|
+| Precision | P-clean, P-split, P-data     |
+| Warmth    | W-story, W-cards, W-personal |
+| Authority | A-impact, A-grid, A-showcase |
+| Energy    | E-dynamic, E-bold, E-minimal |
+
+Selection criteria:
+
+    Match variant to available data — *-showcase needs portfolio/gallery, *-data needs stats/KPIs, *-personal needs team/owner photos
+
+    Match variant to urgency — emergency niches favor *-impact or *-bold (fast visual hierarchy), planned niches can use *-story or *-clean
+
+    If previous projects exist in the same niche, select a DIFFERENT variant than the last one used
+
+Output the variant ID in the Visual Profile section.
 
 After classification, query the design-database skill and load:
 
@@ -166,6 +186,8 @@ Return all classifications as structured Markdown sections:
   
 ## Visual Profile  
 - Assigned profile: [name]  
+- Layout variant: [variant ID — e.g., W-story, A-impact]  
+- Variant justification: [why this variant fits the available data and urgency]  
 - Justification: [why this profile fits, citing specific research data]  
 - Override applied: [yes/no — if yes, explain]  
   
@@ -200,3 +222,5 @@ Market tier is not about the business's actual quality. It's about how they posi
 Do not skip the cross-reference. Every classification must be validated against the design-database. Missing this step creates downstream inconsistencies.
 
 Log uncertainty. If a classification is borderline (e.g., could be mid-range or premium), state both options and explain which you chose and why.
+
+**Anti-pattern: variant repetition.** If generating multiple landings for the same niche (e.g., two landscaping businesses), using the same profile + same variant (e.g., `W-cards` both times) guarantees visual homogeneity. Rotate variants. Document which variant was used so future runs can avoid it.

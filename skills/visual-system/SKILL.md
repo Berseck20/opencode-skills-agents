@@ -84,11 +84,51 @@ Every landing page is assigned ONE profile by the `niche-reasoning` skill. The p
   - Animations: energetic, noticeable. 200–350ms. Scale, rotate, and color transitions. Parallax on scroll. Staggered animations for lists. Still respect `prefers-reduced-motion`.  
   - Layout: asymmetric, dynamic. Overlapping layers, diagonal sections, non-standard grids. Break the grid intentionally — but maintain alignment within sections.  
   - Icons: filled with color. Can use gradients on icons. Animated icons on hover acceptable.  
-  - Images: high energy, motion blur, action shots. Saturated color grading. Full-bleed images.  
+  - Images: high energy, motion blur, action shots. Saturated color grading. Full-bleed images.
+  
+## Structural layout variants per profile  
+Each visual profile has multiple layout strategies. The `landing-architecture` skill selects ONE per landing. Two landings with the same profile MUST use different layout variants.  
+  
+### Precision
+| Variant | Hero                         | Sections                         | Grid             | Dividers                 |
+|---------|------------------------------|----------------------------------|------------------|--------------------------|
+| P-clean | Centered text, no image      | Symmetric 2-col grids            | Even columns     | Thin line borders        |
+| P-split | 50/50 text + image split     | Alternating text-left/text-right | Asymmetric 60/40 | Whitespace only          |
+| P-data  | Stats-forward hero with KPIs | Card-heavy, dashboard feel       | 3-4 col grids    | Subtle background shifts |
+
+###Warmth
+| Variant    | Hero                                 | Sections                               | Grid                    | Dividers                    |
+|------------|--------------------------------------|----------------------------------------|-------------------------|-----------------------------|
+| W-story    | Full-width image with overlay text   | Narrative flow, single column dominant | 1-col + sidebar accents | Curved SVG dividers         |
+| W-cards    | Illustrated hero with character/icon | Card-based everything                  | 2-3 col masonry         | Rounded section transitions |
+| W-personal | Photo of owner/team with quote       | Testimonial-heavy, conversational      | Mixed 1-2 col           | Warm gradient fades         |
+
+###Authority
+| Variant    | Hero                           | Sections                       | Grid                    | Dividers                       |
+|------------|--------------------------------|--------------------------------|-------------------------|--------------------------------|
+| A-impact   | Full-bleed dark image, bold H1 | Wide sections, minimal columns | Full-width blocks       | Angled geometric dividers      |
+| A-grid     | Split hero with stats sidebar  | Dense grid layouts             | 3-4 col tight grid      | Hard color breaks              |
+| A-showcase | Video/slideshow hero           | Portfolio-style sections       | Masonry or gallery grid | No dividers, full-bleed images |
+
+
+###Energy
+| Variant   | Hero                             | Sections                           | Grid              | Dividers               |
+|-----------|----------------------------------|------------------------------------|-------------------|------------------------|
+| E-dynamic | Animated gradient hero, large H1 | Asymmetric, overlapping sections   | Broken grid       | Diagonal cuts          |
+| E-bold    | Full-screen image with parallax  | High contrast alternating sections | 2-col with offset | Wave SVG dividers      |
+| E-minimal | Clean dark hero, neon accent     | Spacious sections, content-focused | Simple 1-2 col    | Color band transitions |
+
+
+Output requirement: The architecture must declare the selected variant ID (e.g., W-story) in its header block. The builder implements that variant's structural rules.
   
 ## Tailwind configuration enforcement  
   
-The `tailwind.config.*` file must reflect the design tokens from `landing-architecture`:  
+The `tailwind.config.*` file must reflect the design tokens from `landing-architecture`, sourced from these design-database files:  
+- **Colors:** `design-database/palettes.md`  
+- **Typography:** `design-database/typography.md`  
+- **Spacing/Shape/Animation:** `design-database/styles.md`  
+  
+No token value is invented. Every value traces to a design-database file or a computed derivation (e.g., primary-light = primary + 15% lightness).
   
 ```javascript  
 // Structure — values come from architecture tokens  
@@ -185,6 +225,7 @@ Rules
     Google Fonts are loaded with only required weights. Do not import 100–900. Import only the weights used in the type scale.
 
 Spacing rules
+
 Vertical rhythm
 
     Sections are separated by the section-y token — consistent across the entire page
@@ -275,3 +316,5 @@ Rules
     Profile consistency is measurable. If you screenshot the page and can identify the visual profile in 3 seconds, the system is working. If it looks like "generic Tailwind site," it's not.
     The design database wins ties. If this system says one thing and the design database says another for a specific niche, the database wins.
     Visual system violations are Major defects. Any mismatch between declared profile and implemented values is flagged by the error-finder agent. Fix before shipping.
+	Anti-pattern: skin-only differentiation.** Two landings with the same profile but different colors still look identical if they share the same layout variant. Profile determines skin. Layout variant determines structure. Both must be declared and both must vary between projects in the same niche.  
+	**Anti-pattern: default grid syndrome.** If every section is a centered container with a 3-column grid of cards, the visual system has failed regardless of how correct the tokens are. Structure must match the selected layout variant.

@@ -19,14 +19,40 @@ metadata:
 - Produce code that runs on first `npm install && npm run dev` — no manual fixes needed  
   
 ## When to use me  
-  
 Use this skill as the final step in the `landing-base-builder` agent workflow, after:  
-1. `landing-architecture` has produced the blueprint  
+1. `landing-architecture` has produced the blueprint (including the header block with Pattern ID, Layout Variant ID, and Variation Axes)  
 2. `visual-system` has been loaded as the active design rule  
 3. `data-extractor` has created all `src/data/*.ts` files  
+Never start building without all three prerequisites complete.  
+  
+### Pre-build checklist  
+Before writing any code, extract from the architecture blueprint:  
+- **Layout Variant ID** (e.g., `W-story`, `A-impact`, `P-split`) → determines hero structure, grid strategy, and section dividers  
+- **CTA formats** → each CTA instance uses a different format (button, sticky-bar, inline-link, etc.)  
+- **Section count** → build exactly this many sections, no more  
+- **Variation Axes choices** → apply these structural decisions throughout  
+  
+If any of these are missing from the architecture, STOP and request a complete blueprint. Do not assume defaults.  
   
 Never start building without all three prerequisites complete.  
   
+## Hero implementation by layout variant  
+The hero is NOT a single template with swapped content. Each layout variant defines a different hero structure:
+
+| Variant pattern     | HTML structure                                   | Key difference                              |
+|---------------------|--------------------------------------------------|---------------------------------------------|
+| *-clean, *-minimal  | Single centered column, text only, CTA below     | No image, maximum whitespace                |
+| *-split, *-grid     | CSS Grid 2-col (text left, image/visual right)   | Asymmetric columns (60/40 or 50/50)         |
+| *-story, *-personal | Full-width image with overlay text container     | Image is background, text has scrim/overlay |
+| *-impact, *-bold    | Full-bleed dark section, oversized H1, stats row | Typography-driven, no hero image            |
+| *-showcase*          | Video embed or image carousel as hero background | Media-first, text is secondary              |
+| *-data*              | Split with KPI cards alongside headline          | Data-forward, dashboard aesthetic           |
+| *-dynamic*           | Animated gradient or parallax background         | Motion-first, text floats over animation    |
+
+Rule: Read the variant ID from the architecture. Build the matching hero structure. Do not default to "centered text + button" for every landing.
+
+
+
 ## Project scaffolding  
   
 ### Directory structure  
@@ -500,6 +526,43 @@ import { faq } from '@data/faq'
   <Footer />  
 </Layout>```
 
+## CTA format implementation  
+Each CTA in the architecture specifies a format. Implement each format differently:  
+  
+### `button`  
+Standard `<button>` or `<a>` styled as primary button. Already covered by ui/Button component.  
+  
+### `sticky-bar`  
+Fixed-position bar at viewport bottom. Contains CTA text + phone number. Visible after scrolling past hero. Hide on scroll-up, show on scroll-down. Requires React component with `client:load`.  
+```astro  
+<!-- StickyBar.tsx — client:load -->``` 
+
+###inline-link
+
+Styled <a> tag within paragraph text. Uses accent color, underline on hover. No component needed — just a CSS class.
+
+###floating-badge
+
+Small fixed circle/pill in bottom-right corner. Contains phone icon or short text. Always visible. Requires React with client:load.
+
+
+###form-embedded
+
+Inline <form> with 2-3 fields (name, phone/email, submit). Styled as a card within the section. Requires React with client:idle.
+
+
+###phone-tap
+
+Large tap-to-call block. Full-width on mobile, styled as accent background with phone icon + number. Uses <a href="tel:">. Pure Astro component.
+
+
+###text-banner
+
+Full-width colored strip between sections. Background uses bg-primary or bg-accent. Contains one line of copy + CTA link. Pure Astro component.
+
+Rule: If the architecture says "Format: sticky-bar", build a sticky bar. Do not substitute with a regular button.
+
+
 Build validation
 
 Before considering the build complete, verify:
@@ -521,6 +584,11 @@ Before considering the build complete, verify:
     Google Fonts loaded with correct weights only
     No unused components or imports
     Every React component has an explicit hydration directive
+
+## Anti-patterns  
+**Anti-pattern: hero monoculture.** If you build 5 landings and all heroes are "centered H1 + subtitle + button", the implementation has failed. Check the variant ID and build the corresponding structure.  
+**Anti-pattern: CTA uniformity.** If every CTA on the page is a `<button class="bg-primary ...">`, the CTA strategy has been ignored. Each CTA instance must look and behave differently per its assigned format.  
+**Anti-pattern: section copy-paste.** Sections with different purposes (services vs testimonials vs FAQ) should NOT share the same container → heading → grid → cards skeleton. Each section type has its own layout logic.
 
 Rules
 

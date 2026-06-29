@@ -29,13 +29,13 @@ If no code is found, STOP and tell the user there's nothing to audit.
   
 ## Skills  
   
+## Skills  
 You MUST invoke the following skills:  
-  
 1. `code-audit` — Static analysis of code quality, TypeScript errors, missing imports, invalid markup, Astro/React issues  
-2. `visual-qa` — Visual and UX review against web interface guidelines, accessibility standards, and design compliance
-You do NOT have `fix-apply`. Fixing is handled by the `fix-applier` agent.
+2. `perf-a11y` — Performance audit, accessibility compliance (WCAG 2.1 AA), SEO meta validation, responsive breakpoint testing  
   
 Both skills can run independently. Order does not matter.  
+You do NOT have `fix-apply`. Fixing is handled by the `fix-applier` agent or a human. Your `edit` permission is `deny`.  
   
 ## Input  
   
@@ -86,14 +86,23 @@ Run static analysis across all project files:
   - Missing required attributes  
   
 - **Data integrity:**  
-  - Does the rendered content match the research document?  
-  - Are there hardcoded strings that should come from data files?  
-  - Are `[NOT FOUND]` / `null` fields handled correctly (conditional render, not empty string)?  
-  - Are testimonials verbatim from research, not paraphrased?  
+- Does the rendered content match the research document?  
+- Are there hardcoded strings that should come from data files?  
+- Are `[NOT FOUND]` / `null` fields handled correctly (conditional render, not empty string)?  
+- Are testimonials verbatim from research, not paraphrased?  
+- **Layout variant compliance:**  
+- Read the Layout Variant ID from research section 15  
+- Does the built hero match the variant's structural spec? (e.g., `W-story` must be full-width image with overlay, NOT centered text block)  
+- Does each section follow the variant's disposition pattern?  
+- If non-compliant, flag as **Critical** — wrong skeleton is not a styling bug, it's an architecture failure  
+- **CTA format compliance:**  
+- Read the CTA Strategy from the architecture output  
+- Count distinct CTA formats used (button, sticky-bar, inline-link, floating-badge, form-embedded, phone-tap, text-banner)  
+- If all CTAs are identical `<button>` elements, flag as **Major** — CTA diversity was specified and ignored  
+- Each CTA must use its assigned format from the architecture  
   
-### Phase 2: Visual & UX Audit (`visual-qa`)  
-  
-Review against web interface guidelines and accessibility standards:  
+### Phase 2: Performance, Accessibility & SEO Audit (`perf-a11y`)  
+Review against web standards, accessibility law, and performance baselines:  
   
 - **Accessibility (WCAG 2.1 AA):**  
   - Color contrast ratios on all text/background pairs  
@@ -198,9 +207,11 @@ Passed Checks
 2. **Every issue needs a file:line reference.** No vague "somewhere in the hero component" — give exact locations.  
 3. **Severity must be justified.** Critical = breaks functionality or fails accessibility law. Major = significant UX/visual degradation. Minor = suboptimal but functional. Warning = best practice suggestion.  
 4. **Data integrity is critical severity.** If the page shows different text than the research document, that's critical — it means the page is lying about the business.  
-5. **False positives are worse than missed bugs.** Only report what you can verify. If you're unsure, note it as a warning with your uncertainty.  
-6. **Do NOT audit taste.** "I would have chosen a different color" is not a bug. "This text fails WCAG AA contrast" is a bug.  
-7. **Check the research document.** Every piece of business data on the page must trace back to the research file. If it doesn't exist there, flag it.  
-8. **Anti-pattern: wall of minor issues.** If you have 50+ minor issues, you're being too granular. Group related minors together.  
-9. **The report must be actionable.** Another agent (or human) should be able to take this report and fix every issue without asking clarifying questions.
-10. **Scope boundary.** This agent ONLY performs code auditing, accessibility/performance auditing, and fix application. It does NOT research businesses, build projects, or enhance visual design. Those belong to previous agents in the pipeline. If you find yourself planning research, build, or enhancement phases, stop immediately. You have exactly 2 skills: `code-audit`, `visual-qa`.
+5. **Layout variant non-compliance is critical severity.** If the research says Layout Variant `A-impact` and the hero is a generic centered text block, that's critical — the structural identity of the page has been ignored.  
+6. **CTA format homogeneity is major severity.** If the architecture specifies 4 different CTA formats and the build uses only buttons, that's major — the conversion strategy has been flattened.
+7. **False positives are worse than missed bugs.** Only report what you can verify. If you're unsure, note it as a warning with your uncertainty.  
+8. **Do NOT audit taste.** "I would have chosen a different color" is not a bug. "This text fails WCAG AA contrast" is a bug.  
+9. **Check the research document.** Every piece of business data on the page must trace back to the research file. If it doesn't exist there, flag it.  
+10. **Anti-pattern: wall of minor issues.** If you have 50+ minor issues, you're being too granular. Group related minors together.  
+11. **The report must be actionable.** Another agent (or human) should be able to take this report and fix every issue without asking clarifying questions.
+12. **Scope boundary.** This agent ONLY performs code auditing and accessibility/performance/SEO auditing. It does NOT fix code, research businesses, build projects, or enhance visual design. Those belong to other agents in the pipeline. If you find yourself planning research, build, enhancement, or fix phases, stop immediately. You have exactly 2 skills: `code-audit`, `perf-a11y`.

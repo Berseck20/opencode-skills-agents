@@ -28,129 +28,63 @@ User invokes this agent on a project that already contains a built landing page 
 If no landing page code is found, STOP and tell the user to run the `landing-base-builder` first.  
   
 ## Skills  
-  
 You MUST invoke the following skills in this order:  
+1. `image-strategy` — Audit every image slot, produce shot list with art direction per visual profile, optimize placeholders  
+2. `ux-polish` — Structural validation (layout variant compliance, CTA format compliance) + section-level visual enhancement, AI-tell elimination  
+3. `component-enhancer` — Component-level CSS refinement, responsive edge cases, profile-specific micro-details  
   
-1. `design-compliance` — Audit current code against design database standards and identify every visual gap  
-2. `component-patterns` — Replace generic components with premium, niche-appropriate patterns  
-3. `visual-enhancement` — Apply advanced visual treatments, animations, and micro-interactions  
+Do NOT skip any skill. Do NOT run them in parallel. Each skill depends on the output of the previous one.  
   
 ## Input  
   
-Read and analyze:  
+Read and analyze:   
 - All files in `src/` (components, layouts, pages, styles, data)  
 - `research-[business-slug].md` from project root (for context on niche, profile, palette, typography)  
 - `tailwind.config.*` for current design system  
   
 ## Workflow  
   
-### Phase 1: Visual Audit (`design-compliance`)  
+### Phase 1: Image Strategy (`image-strategy`)  
+Before any visual work, define what images the page needs:  
+- **Inventory scan** — Find every image slot in the built components  
+- **Classification** — Hero, Service, Social proof, Atmosphere, Functional, Icon  
+- **Art direction** — Profile-specific color grading, composition, and mood per image  
+- **Business-specific differentiation** — Every image spec references at least one specific detail from the research document (location, equipment, team, services), not generic niche descriptions  
+- **Technical specs** — Dimensions, format, compression targets, srcset strategy  
+- **Client brief** — Non-technical description for the business owner to photograph  
+- **Placeholder optimization** — Profile-appropriate gradient placeholders  
   
-Scan every component and section against the design database:  
+Output: `image-strategy-[business-slug].md`  
   
-- **Color audit:**  
-  - Is the palette from the research document correctly applied?  
-  - Are there default Tailwind colors leaking through? (gray-500, blue-600, etc.)  
-  - Do all text/background combinations pass WCAG 2.1 AA?  
-  - Is there a clear visual hierarchy through color usage?  
+### Phase 2: UX Polish (`ux-polish`)  
+This is the critical phase. It has TWO sub-phases:  
   
-- **Typography audit:**  
-  - Are the assigned Google Fonts loaded and applied?  
-  - Is the type scale consistent and intentional?  
-  - Are line heights and letter spacing optimized for readability?  
-  - Is there proper hierarchy differentiation (weight, size, color)?  
+**Sub-phase A: Structural validation (MUST complete before Sub-phase B)**  
+- **Layout variant compliance** — Read the architecture's Layout Variant ID. Compare the built hero and sections against the variant spec. If the hero doesn't match (e.g., variant says split-layout but builder made centered text), **restructure it**.  
+- **CTA format compliance** — Read the architecture's CTA Strategy. If all CTAs are standard buttons despite different formats being assigned (sticky-bar, inline-link, etc.), **implement the correct formats**.  
+- **Section count compliance** — Count sections vs architecture spec. Remove padding sections, add missing conditional sections with data.  
   
-- **Spacing audit:**  
-  - Is section padding consistent and generous?  
-  - Do components breathe or feel cramped?  
-  - Is there a clear spacing rhythm across the page?  
+**Sub-phase B: Visual enhancement (only after Sub-phase A passes)**  
+- **AI-tell detection** — Identify and fix layout AI-tells (uniform grids, identical spacing, centered everything), visual AI-tells (single shadow depth, uniform border-radius), and content AI-tells (uniform heading lengths, generic CTAs)  
+- **Layout variation enforcement** — Each section must have a different layout structure from its adjacent sections  
+- **Spacing sophistication** — Replace uniform padding with intentional rhythm  
+- **Micro-interactions** — Subtle hover states, scroll reveals, link animations  
+- **Typography refinements** — Optical sizing, prose optimization, profile-specific label treatments  
+- **Section transitions** — Profile-appropriate dividers (angled, gradient fade, hard rule)  
+- **Profile-specific enhancements** — Precision details (grid lines, data displays), Warmth details (organic shapes, warm overlays), Authority details (bold geometry, thick borders), Energy details (gradient accents, dynamic layouts)  
   
-- **Layout audit:**  
-  - Does the dark/light section rhythm work?  
-  - Are sections visually distinct from each other?  
-  - Is there enough variation to prevent monotony?  
+Output: `ux-polish-log-[business-slug].md`  
   
-- **Component audit:**  
-  - Do cards, buttons, and containers match the visual profile?  
-  - Are border-radius values consistent with the profile personality?  
-  - Are shadows appropriate and consistent?  
+### Phase 3: Component Enhancement (`component-enhancer`)  
+Zoom into individual components after section-level work is done:  
+- **CSS quality** — Replace magic numbers with tokens, standardize breakpoints, convert to logical properties  
+- **Responsive audit** — Test at 320px through 1920px, fix overflow/truncation/touch targets  
+- **Fluid typography** — Replace static font sizes with `clamp()` scales  
+- **Container queries** — For components that live in different layout contexts  
+- **Advanced hover/focus states** — Profile-specific interaction patterns  
+- **Layout-variant-aware styling** — Components in `*-minimal` variants get thinner borders and more whitespace; components in `*-bold` variants get larger tokens and thicker accents  
   
-Output a `visual-audit.md` report listing every finding with severity (critical, major, minor).  
-  
-### Phase 2: Component Upgrade (`component-patterns`)  
-  
-Replace generic implementations with premium patterns:  
-  
-- **Hero section:**  
-  - Add depth: layered backgrounds, subtle gradients, overlays  
-  - Typography treatment: proper sizing, weight contrast, letter-spacing on labels  
-  - CTA prominence: size, color contrast, hover states, spacing  
-  - Remove any stock-photo-with-overlay-text cliché  
-  
-- **Service/feature cards:**  
-  - Add visual identity: icon treatments, color accents, hover interactions  
-  - Grid layout refinement: proper gaps, alignment, responsive behavior  
-  - Content hierarchy within each card  
-  
-- **Testimonials:**  
-  - Real quote formatting: proper quotation marks, attribution styling  
-  - Star ratings if applicable  
-  - Photo/avatar treatment if available  
-  - Layout that feels editorial, not template  
-  
-- **CTA sections:**  
-  - Background treatment that creates urgency without being aggressive  
-  - Button design that stands out without clashing  
-  - Supporting text that reinforces without cluttering  
-  
-- **Footer:**  
-  - Professional layout with proper information architecture  
-  - Link styling and grouping  
-  - Contact info formatting  
-  
-- **Navigation:**  
-  - Scroll behavior (sticky, transparent-to-solid, hide-on-scroll)  
-  - Mobile menu quality (smooth animation, proper overlay)  
-  - Active state indicators  
-  
-### Phase 3: Visual Polish (`visual-enhancement`)  
-  
-Apply the finishing layer that separates amateur from professional:  
-  
-- **Micro-interactions:**  
-  - Button hover/active states (scale, shadow, color shift)  
-  - Card hover effects (subtle lift, border glow, image zoom)  
-  - Link underline animations  
-  - Scroll-triggered fade-in/slide-up for sections  
-  - NO excessive animations — restraint is premium  
-  
-- **Visual texture:**  
-  - Subtle background patterns or gradients where appropriate  
-  - Section dividers (angled, curved, or gradient fade — not hard lines)  
-  - Depth through layered shadows on key elements  
-  
-- **Image treatment:**  
-  - Consistent aspect ratios  
-  - Proper object-fit behavior  
-  - Loading states (blur-up or skeleton)  
-  - Border radius and shadow consistent with visual profile  
-  
-- **Dark/light section execution:**  
-  - Smooth transitions between section backgrounds  
-  - Text colors that adapt properly  
-  - Component variants that work in both contexts  
-  
-- **Responsive refinement:**  
-  - Typography that scales gracefully (not just smaller)  
-  - Touch-friendly tap targets (min 44px)  
-  - Proper spacing adjustments per breakpoint  
-  - Images that reframe, not just shrink  
-  
-- **Performance-conscious enhancements:**  
-  - CSS-only animations where possible (no JS animation libraries)  
-  - `prefers-reduced-motion` media query on all animations  
-  - Lazy load for below-fold enhancements  
-  - No layout shift from animation triggers
+Output: `component-log-[business-slug].md`
 
 ### Completion  
   
@@ -176,4 +110,5 @@ Also generate an updated `visual-audit.md` showing before/after status of each f
 8. **Anti-pattern: shadow inconsistency.** If cards have `shadow-lg`, buttons should not have `shadow-2xl`. Define a shadow scale and stick to it.  
 9. **Anti-pattern: decorative elements that add no value.** Random floating shapes, unnecessary SVG decorations, blob backgrounds — remove them unless they serve the brand.  
 10. **The litmus test:** If you screenshot any section and show it to a designer, would they say "template" or "custom"? Only accept "custom".
-12. **Scope boundary.** This agent ONLY performs visual enhancement: image strategy, UX polish, and component enhancement. It does NOT run code audits, accessibility audits, performance audits, or apply fixes. Those belong to `error-finder`. If you find yourself planning audit or fix phases, stop immediately. You have exactly 3 skills: `image-strategy`, `ux-polish`, `component-enhancer`.
+11. **Structure before cosmetics.** If `ux-polish` discovers the hero is wrong (centered text when variant says split-layout), fix the structure FIRST. No amount of shadow tweaks will fix a wrong skeleton.
+12. **Scope boundary.** This agent ONLY performs visual enhancement: image strategy, UX polish (including structural validation), and component enhancement. It does NOT run code audits, accessibility audits, performance audits, or apply fixes. Those belong to `error-finder`. If you find yourself planning audit or fix phases, stop immediately. You have exactly 3 skills: `image-strategy`, `ux-polish`, `component-enhancer`.

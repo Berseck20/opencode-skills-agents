@@ -25,9 +25,28 @@ Requires:
 - Image strategy document (for image container context)  
 - Design database access (for style, palette, and UX reference)  
   
-## AI-tell detection  
+## Structural validation (before any enhancement)  
+Before applying visual tweaks, verify that the base build respects the architecture's structural decisions. If it doesn't, CSS polish on a wrong structure is wasted effort.  
   
-Before enhancing, identify and flag these common AI-generated patterns:  
+### Check 1: Layout variant compliance  
+Read the architecture's header block → Layout Variant ID (e.g., `W-story`, `A-impact`).  
+Compare the built hero and section structures against the variant spec in `visual-system` → Structural layout variants.  
+- If the hero doesn't match the variant (e.g., variant says "full-width image with overlay" but builder made "centered text + button"), **flag as Critical** and rewrite the hero structure.  
+- If sections all use the same grid pattern despite the variant specifying mixed layouts, **flag as Critical** and restructure.  
+  
+### Check 2: CTA format compliance  
+Read the architecture's CTA Strategy → each CTA has an assigned format (button, sticky-bar, inline-link, etc.).  
+- If all CTAs are standard buttons despite different formats being specified, **flag as Critical** and implement the correct formats.  
+  
+### Check 3: Section count compliance  
+Count sections in the built page. Compare against architecture's Section Count.  
+- If the builder added padding sections not in the architecture, **remove them**.  
+- If the builder omitted conditional sections that have data, **add them**.  
+  
+**Rule:** Structural fixes happen FIRST. Only after all Critical flags are resolved do you proceed to visual enhancement.  
+  
+## AI-tell detection  
+After structural validation, identify and flag these common AI-generated patterns:  
   
 ### Layout AI-tells
 
@@ -93,15 +112,18 @@ Section E (FAQ):          py-16 lg:py-20    — standard
 Section F (Footer):       py-12 lg:py-16    — compact, utilitarian  
 Rule: Adjacent sections should never have identical padding unless intentional.
 
-3. Layout variation
-Break the grid monotony while maintaining coherence:
-Hero:           Full-width, asymmetric split or centered impact  
-Services:       3-col grid with one featured card spanning 2 cols  
-Testimonials:   Offset layout — large quote left, smaller cards right  
-Stats:          Inline horizontal strip, not a grid  
-About/Team:     Image + text split (60/40 or 40/60)  
-CTA:            Full-width dark band, centered, minimal  
-FAQ:            Single column, max-width constrained (not full grid)  
+3. Layout variation  
+Break the grid monotony while maintaining coherence. These are NOT suggestions — verify each one:  
+  
+- **Hero:** Must match the layout variant from `visual-system`. If variant says split, it's split. If it says overlay, it's overlay. Do not default.  
+- **Services:** If 3+ services, use a featured card (larger, spanning 2 cols) + smaller cards. Never uniform grid of identical cards.  
+- **Testimonials:** Offset layout (large quote + smaller cards), or single spotlight testimonial, or horizontal scroll. Never 3 identical quote cards in a row.  
+- **Stats:** Inline horizontal strip or embedded in hero. Never a card grid.  
+- **About/Team:** Asymmetric image + text split (60/40 or 40/60). Never centered text block.  
+- **CTA:** Matches the assigned CTA format from architecture. Never a generic centered button if the format says sticky-bar or form-embedded.  
+- **FAQ:** Single column, max-width constrained. Never full-width grid.  
+  
+If the built page violates any of these, restructure the section — not just restyle it.  
 
 4. Micro-interactions
 Add subtle, purposeful interactions that communicate quality:
@@ -352,3 +374,6 @@ Rules
     Never break what works. The base landing is structurally sound. Enhancements add quality without removing functionality. If an enhancement breaks the build, revert it.
     The 3-second test. Screenshot the page. Show it to someone for 3 seconds. If they say "Tailwind template" or "AI-generated," the enhancements aren't enough. If they say "that looks professional," the skill succeeded.
     Design database wins ties. When choosing between enhancement approaches, consult the design database for the active niche. Industry-specific guidance overrides generic best practices.
+	**Rule: Structure before skin.** If the hero is wrong (centered text when it should be split-layout), no amount of shadow tweaks, spacing refinements, or micro-interactions will fix it. Restructure first, polish second.  
+	**Rule: Polish is not differentiation.** Two landings with identical structure but different shadows and spacing still look the same. If after your enhancements the layout skeleton is unchanged, the skill has only applied cosmetics. True polish includes verifying and enforcing the layout variant.  
+	**Anti-pattern: cosmetic-only pass.** If your enhancement log contains only CSS changes (shadows, spacing, border-radius, hover effects) and zero structural changes (hero type, grid layout, section order, CTA format), the pass was superficial. Review structural validation again.

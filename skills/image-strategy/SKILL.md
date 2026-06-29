@@ -52,56 +52,51 @@ Classify each image slot:
 | Functional        | UI element with image treatment | Map placeholder, form decoration             |
 | Icon/Illustration | Small graphic element           | Service icons, feature icons, decorative SVG |
 
+
+### Step 2.5 — Business-specific differentiation  
+Before applying generic profile art direction, extract from the research document:  
+- **Real business details:** actual location (city, neighborhood), type of building, team composition, equipment used, specific services offered  
+- **Visual identity clues:** business colors/logo if found, style of their existing photos, neighborhood aesthetic  
+- **Service-specific scenes:** what does THIS business actually do day-to-day? A tree trimming company and a lawn care company are both "landscaping" but their images should show completely different work.  
+  
+**Rule:** Every image spec must reference at least ONE specific detail from the research data. "Professional landscaping team at work" is generic. "Crew of 3 trimming mature oak trees in a suburban front yard with pickup truck visible" is specific. The research document is the source — use actual business details, not niche stereotypes.
+
+
 Step 3 — Art direction per profile
 
 Each image receives art direction based on the active visual profile:
-Precision profile
 
-    Color grading: desaturated, cool tones, clinical whites
+#### Precision profile  
+Color grading: desaturated, cool tones, clinical whites  
+Composition: centered, symmetrical, clean backgrounds  
+Subjects: professional settings, clean workspaces, equipment close-ups  
+Avoid: warm filters, candid shots, busy backgrounds, stock clichés  
+Format preference: sharp edges, no vignettes, minimal post-processing  
+**Differentiation hook:** specify the EXACT type of equipment, workspace, or procedure relevant to THIS business. "Dental chair with overhead light in a modern operatory" not "medical professional at work."
 
-    Composition: centered, symmetrical, clean backgrounds
+#### Warmth profile  
+Color grading: warm tones, golden hour feel, soft contrast  
+Composition: off-center, natural framing, depth of field  
+Subjects: people interacting, hands at work, cozy environments  
+Avoid: clinical lighting, sterile backgrounds, corporate poses  
+Format preference: soft edges acceptable, gentle color grading  
+**Differentiation hook:** reference specific service moments from the research. "Owner kneeling to greet a golden retriever in the reception area" not "friendly staff with pet."
 
-    Subjects: professional settings, clean workspaces, equipment close-ups
+#### Authority profile  
+Color grading: high contrast, dramatic lighting, deep shadows  
+Composition: low angle when possible, strong geometric framing  
+Subjects: finished work, heavy equipment, team in action, raw materials  
+Avoid: soft focus, pastel tones, delicate compositions  
+Format preference: sharp, punchy, bold processing  
+**Differentiation hook:** specify the EXACT materials, machinery, or project types from the research. "Crew installing standing-seam metal roof on a two-story colonial" not "roofing team working."
 
-    Avoid: warm filters, candid shots, busy backgrounds, stock clichés
-
-    Format preference: sharp edges, no vignettes, minimal post-processing
-
-Warmth profile
-
-    Color grading: warm tones, golden hour feel, soft contrast
-
-    Composition: off-center, natural framing, depth of field
-
-    Subjects: people interacting, hands at work, cozy environments
-
-    Avoid: clinical lighting, sterile backgrounds, corporate poses
-
-    Format preference: soft edges acceptable, gentle color grading
-
-Authority profile
-
-    Color grading: high contrast, dramatic lighting, deep shadows
-
-    Composition: low angle when possible, strong geometric framing
-
-    Subjects: finished work, heavy equipment, team in action, raw materials
-
-    Avoid: soft focus, pastel tones, delicate compositions
-
-    Format preference: sharp, punchy, bold processing
-
-Energy profile
-
-    Color grading: saturated, vibrant, high energy
-
-    Composition: dynamic angles, motion blur acceptable, tight crops
-
-    Subjects: action shots, vibrant food, crowd energy, movement
-
-    Avoid: static poses, muted colors, empty spaces
-
-    Format preference: vivid processing, can push saturation
+#### Energy profile  
+Color grading: saturated, vibrant, high energy  
+Composition: dynamic angles, motion blur acceptable, tight crops  
+Subjects: action shots, vibrant food, crowd energy, movement  
+Avoid: static poses, muted colors, empty spaces  
+Format preference: vivid processing, can push saturation  
+**Differentiation hook:** reference the specific activity, cuisine, or event type from the research. "Close-up of hand-stretched pizza dough with flour dust in the air" not "chef preparing food."
 
 Shot list format
 
@@ -217,3 +212,7 @@ Rules
     File sizes are budgets. The spec says max 80KB for a card image. If the final image is 200KB, it fails the spec.
 
     Alt text is for blind users. "Image" and "photo" are not alt text. Describe what the image shows in a way that conveys the same information a sighted user gets.
+	
+	**Anti-pattern: niche-level descriptions.** "Landscaping work in progress" describes the NICHE, not the BUSINESS. Every image spec must describe a scene that could only belong to THIS specific business based on research data (services, location, team size, equipment, specialties).  
+	**Anti-pattern: interchangeable shot lists.** If you swap the business name and the shot list still works for any competitor, it's too generic. At least 3 images in the shot list must reference details unique to this business.  
+	**Anti-pattern: same shot list for same niche.** Two landscaping businesses should NOT have the same 8-image spec. One might specialize in hardscaping (patios, retaining walls) and the other in maintenance (mowing, seasonal cleanup). The research data drives the difference.

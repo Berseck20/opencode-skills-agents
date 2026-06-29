@@ -105,42 +105,52 @@ Schema markup
 | AggregateRating                                           | If aggregate ratings found | ratingValue, reviewCount, bestRating                    |
 | FAQPage                                                   | If FAQ section planned     | mainEntity with Question + acceptedAnswer pairs         |
 
-CTA strategy
-Primary CTA
+## CTA strategy  
+  
+### CTA levels  
+Each landing page uses 3 levels: **primary**, **secondary**, and **micro**. Text rules remain the same — action verb + specific outcome, urgency-calibrated, no generic phrases.  
+  
+### CTA format diversification (CRITICAL)  
+Every CTA instance on the page MUST use a **different visual format**. Two CTAs with the same format = homogeneity failure.  
+  
+Available formats:  
 
-    Text: Action verb + specific outcome (e.g., "Get Your Free Estimate", "Schedule Emergency Repair")
 
-    Urgency calibration:
+| Format         | HTML pattern                                                 | Best for                             | Visual weight |
+|----------------|--------------------------------------------------------------|--------------------------------------|---------------|
+| button         | Standard <button> or <a> styled as button                    | Hero primary CTA, final CTA section  | Highest       |
+| sticky-bar     | Fixed bar at bottom of viewport, appears on scroll past hero | Mobile conversion, emergency niches  | High          |
+| inline-link    | Underlined text link within a paragraph, arrow icon          | Mid-content secondary CTAs           | Low           |
+| floating-badge | Fixed circular or pill element at bottom-right corner        | Phone/WhatsApp tap, emergency niches | Medium        |
+| form-embedded  | Inline form (name + phone/email + submit) within a section   | Lead gen niches, planned services    | High          |
+| phone-tap      | Large phone number styled as tappable link, tel: href        | Emergency/urgent, mobile-first       | Medium        |
+| text-banner    | Full-width colored band with text + action, between sections | Urgency reinforcement, mid-scroll    | Medium        |
 
-        Emergency: "Call Now", "Get Help Today", phone number as CTA
+CTA assignment rules
 
-        Planned: "Get a Free Quote", "Schedule a Consultation"
+    Primary CTA — appears in hero + dedicated CTA section. Each instance uses a DIFFERENT format (e.g., hero = button, CTA section = form-embedded)
 
-        Discretionary: "Book Your Session", "See Our Work"
+    Secondary CTA — alternative conversion path. Must use a format NOT used by primary (e.g., inline-link or text-banner)
 
-    Placement: Hero section + final CTA section (minimum 2 instances)
+    Micro-CTAs — one per content section, contextual. Use remaining formats. After testimonials → inline-link. After services → phone-tap. Sticky-bar appears after scrolling past hero.
 
-    Design notes: Highest contrast button on page, largest CTA size
+    Minimum 3 distinct formats per page. Maximum = number of CTA instances (no repeats unless page has 8+ CTAs)
 
-Secondary CTA
+    Emergency niches MUST include at least one phone-tap and one sticky-bar
 
-    Alternative conversion path for visitors not ready for primary action
+    Planned niches MUST include at least one form-embedded
 
-    Examples: "View Our Portfolio", "Read Our Reviews", "Learn About Our Process"
+CTA assignment output format
 
-    Lower visual weight than primary CTA
+For each CTA instance, specify:
 
-    Placement: hero section (below primary) or after services section
-
-Micro-CTAs
-
-    One per content section, contextually relevant
-
-    Reinforce primary action with section-specific framing
-
-    Examples: after testimonials → "Join [X] happy customers", after services → "Ask about [specific service]"
-
-    Text links or small buttons — never competing with primary CTA
+CTA-[number]:  
+  Level: primary | secondary | micro  
+  Text: "[exact CTA text]"  
+  Format: [format from table above]  
+  Placement: [section name]  
+  Urgency: [emergency | planned | discretionary]  
+  Notes: [why this format for this placement]
 
 Words to NEVER use in CTAs
 
@@ -264,8 +274,15 @@ Return the complete content strategy as structured Markdown:
   
 ## CTA Strategy  
 ### Primary CTA  
+- Text: [copy]  
+- Format: [format from catalog]  
+- Placement: [section]  
 ### Secondary CTA  
+- Text: [copy]  
+- Format: [format from catalog]  
+- Placement: [section]  
 ### Micro-CTAs (per section)  
+- [Section]: [copy] — Format: [format from catalog]  
   
 ## Objection Map  
 | Objection | Counter | Evidence | Placement | Approach |  
@@ -302,3 +319,5 @@ Local SEO is not optional. Every local business landing page must target geograp
 Anti-pattern: keyword-stuffed meta description. The meta description is for humans first. One natural keyword inclusion is enough.
 
 Anti-pattern: objection map without placement. Every objection must have a specific section where it gets addressed. Floating objections don't convert.
+**Anti-pattern: CTA monotony.** If all CTAs on the page are styled buttons with similar text, the page feels templated. Vary format AND copy. "Get a Free Quote" as a button and "Get Your Free Estimate" as another button is NOT variation.  
+**Anti-pattern: CTA overload.** More than 3 CTA instances makes the page feel desperate. If you need to persuade that hard, the content above the CTA has failed.

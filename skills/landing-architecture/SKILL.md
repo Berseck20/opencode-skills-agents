@@ -26,7 +26,7 @@ Never run without the research document. If it doesn't exist, STOP.
 Read and extract from `research-[business-slug].md`:  
   
 - Niche classification (primary, sub-niche, tier, urgency)  
-- Visual profile (Precision, Warmth, Authority, Energy)  
+- Visual profile (Precision, Warmth, Authority, Energy) — includes **Layout Variant ID** (e.g., `W-story`, `A-impact`, `P-split`, `E-dynamic`)  
 - Design database matches (palette, style, typography, landing pattern, UX guidelines)  
 - Message hierarchy (H1, H2s, supporting copy)  
 - Conversion framework (PAS, AIDA, BAB, hybrid)  
@@ -38,15 +38,52 @@ Read and extract from `research-[business-slug].md`:
   
 **Every field marked `[NOT FOUND]` in the research document means that section is conditional — plan it but flag it for conditional rendering.**  
   
+
+## Layout variant resolution  
+  
+The Layout Variant ID from the research document (section 15) is the **structural DNA** of this landing page. It determines:  
+  
+1. **Hero structure** — Not a cosmetic choice. The variant dictates the hero's HTML skeleton:  
+   - `*-story` → Full-width image background with content overlay, long-form headline area  
+   - `*-split` → 2-column asymmetric layout (content | visual), NO full-width image  
+   - `*-impact` → Typography-driven dark hero, minimal imagery, maximum whitespace  
+   - `*-showcase` → Product/service gallery hero with carousel or grid, content below  
+   - `*-minimal` → Clean single-column, thin hero band, content-dense below fold  
+   - `*-bold` → Oversized typography, strong geometric shapes, high-contrast blocks  
+  
+2. **Section disposition** — Each variant implies a different rhythm:  
+   - `*-story` → Long scroll, editorial rhythm, generous whitespace between sections  
+   - `*-split` → Alternating 2-column sections, compact vertical  
+   - `*-impact` → Short page, few powerful sections, strong visual anchors  
+   - `*-showcase` → Gallery-heavy, multiple visual sections, minimal text blocks  
+   - `*-minimal` → Dense information, thin spacing, utility-focused  
+   - `*-bold` → Asymmetric sections, oversized elements, unconventional grid breaks  
+  
+3. **Page length control** — The variant constrains total section count:  
+   - `*-impact` and `*-minimal` → MAX 7 sections (including nav/footer)  
+   - `*-story` → MAX 10 sections  
+   - `*-split` and `*-bold` → MAX 9 sections  
+   - `*-showcase` → MAX 8 sections  
+  
+**Rule:** If the data supports more sections than the variant allows, MERGE sections (e.g., combine About + Team into one section) rather than exceeding the limit. If the data supports fewer, do NOT pad with filler sections.  
+  
+**Rule:** The variant prefix letter maps to the visual profile:  
+- `W-` = Warmth, `P-` = Precision, `A-` = Authority, `E-` = Energy  
+- If the research says profile=Warmth and variant=`W-story`, the hero MUST follow the `*-story` structure with Warmth visual tokens. No mixing.
+
 ## Section planning  
   
 ### Section order  
+Define the exact sequence of sections following this process:  
   
-Define the exact sequence of sections. The order comes from the `landing-patterns.md` match in the design database, adjusted by:  
+1. **Select the landing pattern** from `design-database/landing-patterns.md` using the niche mapping table. The pattern ID (Emergency Response, Trust Builder, Portfolio Showcase, etc.) defines the base section sequence and section catalog codes (H1-H8, SP1-SP7, CTA1-CTA8).  
+2. **Apply variation axes** from `landing-patterns.md` → Variation Axes section. For each axis (hero style, social proof format, CTA rhythm, visual density, content depth), select the variant that matches the research data. Two landings in the same niche MUST differ in at least 2 variation axes.  
+3. **Adjust by conversion framework:** PAS puts problem-oriented content early. AIDA front-loads attention-grabbers. BAB leads with current state.  
+4. **Adjust by urgency level:** Emergency niches put phone/CTA within first viewport. Planned niches can afford a longer trust-building sequence.  
+5. **Trim by available data:** Sections without data get flagged as conditional, not removed. If testimonials are `[NOT FOUND]`, the testimonials section exists in the plan but renders only if data is provided later.  
+6. **Enforce length rule:** The final section count = mandatory sections + conditional sections WITH data. Never add filler sections to "complete" a layout. A 6-section landing is valid.  
   
-1. **Conversion framework flow:** PAS puts problem-oriented content early. AIDA front-loads attention-grabbers. BAB leads with current state.  
-2. **Urgency level:** Emergency niches put phone/CTA within first viewport. Planned niches can afford a longer trust-building sequence.  
-3. **Available data:** Sections without data get flagged as conditional, not removed. If testimonials are `[NOT FOUND]`, the testimonials section exists in the plan but renders only if data is provided later.  
+**Output the selected pattern ID and variation axis choices at the top of the Section Plan.**  
   
 ### Standard section catalog  
   
@@ -72,14 +109,22 @@ For each section in the plan, specify:
     Responsive behavior: [how layout changes at mobile/tablet/desktop]
 
     CTA: [which CTA level appears here, if any]
-
+ 
   
+### CTA variation rule  
+Reference `design-database/ux-guidelines.md` → CTA Rules. Apply:  
+- Maximum 3 CTA instances per landing (primary + secondary + micro)  
+- Each CTA instance MUST use a different format from this list: button, sticky bar, inline text link, floating badge, form-embedded, phone-tap  
+- Never repeat the same CTA format twice in the same landing  
+- CTA placement follows the pattern's CTA rhythm axis, not a fixed position
+
+
 ### Mandatory sections (every landing)  
   
 1. **Navigation** — sticky, transparent-to-solid on scroll, mobile hamburger menu  
-2. **Hero** — primary value proposition, primary CTA, above the fold  
+2. **Hero** — Structure determined by Layout Variant ID (see Layout variant resolution above). The hero is NOT "a big section with a headline and button" — its HTML skeleton, column count, image placement, and content hierarchy are all dictated by the variant. Includes primary CTA in the format assigned by content-seo.  
 3. **Services/Features** — core offerings with descriptions  
-4. **CTA Section** — dedicated conversion section with primary CTA  
+4. **CTA Section** — dedicated conversion section. Each CTA instance across the entire page must use a DIFFERENT format from this list: `button`, `sticky-bar`, `inline-link`, `floating-badge`, `form-embedded`, `phone-tap`, `text-banner`. The dedicated CTA section uses the highest-impact format not yet used elsewhere on the page. 
 5. **Footer** — NAP info, links, legal  
   
 ### Conditional sections (data-dependent)  
@@ -95,8 +140,11 @@ For each section in the plan, specify:
 14. **Pricing** — only if pricing data exists and is meant to be public  
   
 ## Design tokens  
-  
-Generate a complete token set derived from the design database matches:  
+Generate a complete token set derived from these specific design database files:  
+- **Colors:** `design-database/palettes.md` → select palette by niche, extract all 16 semantic roles  
+- **Typography:** `design-database/typography.md` → select pairing by visual profile ID (BI-XX, CC-XX, etc.), extract scale  
+- **Spacing/Shape/Animation:** `design-database/styles.md` → select style profile, extract spacing system, shadow set, border radii, animation tokens  
+- **Do NOT invent values.** Every token must trace to a specific value in these files.  
   
 ### Color tokens  
   
@@ -267,55 +315,61 @@ Global responsive rules
 
     Hero: single column centered on mobile, split layout on desktop (if applicable)
 
-Output format
-
-Return the complete architecture as a structured Markdown document:
-
-# Landing Architecture: [Business Name]  
+## Output format  
+Return the complete architecture as a structured Markdown document.  
   
-## Design Tokens  
-### Colors  
-### Typography  
-### Spacing  
-### Shape  
-### Animation  
+**Header block (mandatory):**  
   
-## Section Plan  
-### 1. Navigation  
-### 2. Hero  
-### 3. [Section Name]  
-...  
-### N. Footer  
+Pattern: [pattern ID from landing-patterns.md]  
+Style Profile: [profile ID from styles.md]  
+Palette: [palette ID from palettes.md]  
+Typography Pairing: [pairing ID from typography.md]  
+Variation Axes: [axis1: choice, axis2: choice, ...]  
+Section Count: [number]  
   
-## Component Specifications  
-### [Component Name]  
-...  
   
-## Responsive Strategy  
-  
-## Dark/Light Rhythm Map  
-  
-## Conditional Sections Summary  
+# Landing Architecture: [Business Name]    
+    
+## Design Tokens    
+### Colors    
+### Typography    
+### Spacing    
+### Shape    
+### Animation    
+    
+## Section Plan    
+### 1. Navigation    
+### 2. Hero    
+### 3. [Section Name]    
+...    
+### N. Footer    
+    
+## Component Specifications    
+### [Component Name]    
+...    
+    
+## Responsive Strategy    
+    
+## Dark/Light Rhythm Map    
+    
+## Conditional Sections Summary    
 | Section | Required Data | Status |  
 
 Rules
 
-    Zero ambiguity. If the builder has to guess a color, spacing value, font size, or layout decision, this plan has failed.
-
-    Design database values are final. Do not override palette, typography, or pattern decisions from the database unless there's a documented contrast failure.
-
-    Conditional ≠ deleted. Sections with [NOT FOUND] data are planned with conditional rendering, not removed from the architecture.
-
-    Every token must be used. Do not define tokens that no section references. Do not reference values that aren't in the token set.
-
-    Contrast is non-negotiable. Every text/background pair must pass WCAG 2.1 AA (4.5:1 for normal text, 3:1 for large text). Calculate it. If it fails, adjust the token and document the change.
-
-    Hydration is intentional. Every React component must have an explicit hydration directive with a documented reason. Default is no hydration (static Astro).
-
-    Mobile is not an afterthought. Every section spec must include mobile behavior. "Same but smaller" is not a responsive strategy.
-
-    Section count is data-driven. A business with 3 services, no reviews, and no team photos gets a 6-section page. A business with 12 services, 50 reviews, and team bios gets a 12-section page. Do not pad or cut.
-
-    Anti-pattern: token soup. If you have more than 20 color tokens, you're overcomplicating it. Simplify.
-
-    Anti-pattern: component explosion. A card is a card. Do not create ServiceCard, FeatureCard, BenefitCard, OfferingCard as separate components if they share 90% of their structure. Use variants.
+    **Zero ambiguity.** If the builder has to guess a color, spacing value, font size, or layout decision, this plan has failed.
+    **Design database values are final.** Do not override palette, typography, or pattern decisions from the database unless there's a documented contrast failure.
+    **Conditional ≠ deleted.** Sections with [NOT FOUND] data are planned with conditional rendering, not removed from the architecture.
+    **Every token must be used.** Do not define tokens that no section references. Do not reference values that aren't in the token set.
+    **Contrast is non-negotiable.** Every text/background pair must pass WCAG 2.1 AA (4.5:1 for normal text, 3:1 for large text). Calculate it. If it fails, adjust the token and document the change.
+    **Hydration is intentional.** Every React component must have an explicit hydration directive with a documented reason. Default is no hydration (static Astro).
+    **Mobile is not an afterthought.** Every section spec must include mobile behavior. "Same but smaller" is not a responsive strategy.
+    **Section count is data-driven.** A business with 3 services, no reviews, and no team photos gets a 6-section page. A business with 12 services, 50 reviews, and team bios gets a 12-section page. Do not pad or cut.
+    **Anti-pattern: token soup.** If you have more than 20 color tokens, you're overcomplicating it. Simplify.
+    **Anti-pattern: component explosion.** A card is a card. Do not create ServiceCard, FeatureCard, BenefitCard, OfferingCard as separate components if they share 90% of their structure. Use variants.
+	**Anti-pattern: ignoring layout variant.** If the architecture produces a centered-text hero when the variant says `*-split`, the entire architecture is invalid. The variant is structural law, not a suggestion.  
+	**Anti-pattern: uniform CTA formats.** If every CTA in the plan is `button`, the CTA strategy has failed. Minimum 3 distinct formats across the page.  
+	**Anti-pattern: page length inflation.** If the variant says MAX 7 sections and the plan has 11, you've ignored the variant's constraints. Merge or cut — never exceed.  
+	**Layout variant is non-negotiable.** It cannot be overridden by niche, data availability, or personal preference. It CAN be adjusted within its structural rules (e.g., `*-split` can be 60/40 or 70/30 column split, but it MUST be a split).
+	**Anti-pattern: structural cloning.** If two landings in the same niche share the same pattern + same hero variant + same CTA rhythm, the second one has failed. Vary at least 2 axes.  
+	**Anti-pattern: length padding.** A landing with 14 sections where 6 have thin or fabricated content is worse than a landing with 8 dense sections. Cut ruthlessly.

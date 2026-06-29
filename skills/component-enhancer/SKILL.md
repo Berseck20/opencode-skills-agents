@@ -16,13 +16,20 @@ metadata:
 - Ensure component isolation — every component is self-contained and portable  
   
 ## When to use me  
-  
 Use this skill as the third and final step in the `rebuild-landing` workflow, after `ux-polish` has completed the section-level pass. This skill zooms into individual components.  
-  
 Requires:  
-- Astro project already enhanced by `ux-polish`  
+- Astro project already enhanced by `ux-polish` (with structural validation PASSED)  
 - Active visual profile assignment  
+- Layout variant ID from the architecture blueprint  
 - Design database access  
+  
+### Scope boundary  
+This skill enhances CSS, interactions, and responsive behavior at the COMPONENT level. It does NOT change:  
+- Section order or section count (that's `ux-polish`)  
+- Hero structure or CTA formats (that's `ux-polish` + `astro-builder`)  
+- Data bindings or content (that's `data-extractor`)  
+  
+If during the audit you discover a structural issue (wrong hero type, missing CTA format), log it as a blocking issue and stop. Do not apply cosmetic polish to a structurally wrong component.  
   
 ## Component audit protocol  
   
@@ -147,6 +154,20 @@ Elevate interaction states beyond basic color change:
   outline-offset: 2px;  
 }  
 
+### 5.5. Layout-variant-aware enhancements  
+The layout variant affects how individual components should be styled:
+
+| Variant pattern     | Component implication                                                         |
+|---------------------|-------------------------------------------------------------------------------|
+| *-clean, *-minimal  | Maximum whitespace inside components, thinner borders, no decorative elements |
+| *-split, *-grid     | Components must handle asymmetric containers, use container queries           |
+| *-story, *-personal | Components on image backgrounds need scrim/contrast treatment                 |
+| *-impact, *-bold    | Components can be larger, bolder — increase font-size tokens, thicker accents |
+| *-showcase          | Media-first components — image/video containers get priority sizing           |
+| *-data              | Components with numbers/KPIs get tabular-nums, monospace, alignment grids     |
+
+Rule: Read the variant ID. Apply the matching component-level treatment. A card in a *-minimal variant should NOT have the same border, shadow, and padding as a card in a *-bold variant, even within the same profile.
+
 6. Profile-specific component details
 Precision
 
@@ -268,3 +289,6 @@ Rules
     Profile is visible. Someone reviewing a single component should be able to guess the visual profile from its CSS. If all profiles look the same at component level, this skill failed.
     Performance budget. No animation that triggers layout or paint on scroll. Transitions on transform and opacity only. No box-shadow transitions on mobile.
     Never remove accessibility. If a component has ARIA attributes, semantic HTML, or keyboard handlers, they stay. Enhancements are visual only.
+	**Anti-pattern: uniform enhancement pass.** If you apply the same CSS tweaks (same shadow values, same hover effect, same border treatment) to every component regardless of its role and the layout variant, the enhancement is mechanical, not intentional. Cards, buttons, headings, and containers should each receive different treatment calibrated to their function and the variant.  
+	**Anti-pattern: cosmetic override of structure.** If `ux-polish` restructured the hero from centered to split-layout, do NOT re-center elements inside the hero via component-level CSS. Respect structural decisions from the previous step.
+	

@@ -45,11 +45,13 @@ Read the `research-[business-slug].md` file from the project root. This is your 
 Extract from it:  
 - Business data (sections 1-12)  
 - Niche classification (section 13)  
-- Visual profile assignment (section 15)  
+- Visual profile assignment (section 15) — includes **Layout variant ID** (e.g., `W-story`, `A-impact`)  
 - Design database matches (section 16 — palette, style, typography, landing pattern, UX)  
 - Content strategy (sections 17-23)  
 - Image requirements (section 24)  
 - Data gaps (section 25 — respect these, do not fill them with invented data)  
+  
+**Critical:** The Layout variant ID from section 15 determines the structural skeleton of the entire page. Pass it to `landing-architecture` and `astro-builder`. If it's missing, STOP and request a complete research document.  
   
 ## Workflow  
   
@@ -58,10 +60,10 @@ Extract from it:
 Define the complete landing page blueprint:  
   
 - **Section sequence** — Ordered list of sections based on the landing pattern from research (section 16d), adjusted for the specific business  
-- **Hero variant** — Select from: `hero-centered`, `hero-split`, `hero-video-bg`, `hero-minimal`, `hero-showcase` — justified by niche + urgency level  
+- **Hero variant** — Determined by the Layout Variant ID from the research document (section 15). Do NOT select from a fixed list — the variant ID dictates the hero structure (e.g., `W-story` → full-width image with overlay, `P-split` → 2-column asymmetric, `A-impact` → typography-driven dark hero). See `visual-system` → Structural layout variants for the mapping.  
 - **Component map** — Which components each section needs (cards, grids, accordions, carousels, forms, etc.)  
 - **Dark/light rhythm** — Alternating section backgrounds to create visual flow, driven by the assigned palette  
-- **CTA placement map** — Where each CTA type goes (primary, secondary, micro) matching research section 20  
+- **CTA placement map** — Where each CTA goes AND its format (button, sticky-bar, inline-link, floating-badge, form-embedded, phone-tap, text-banner). Each CTA instance must use a DIFFERENT format. Match research section 20 for text, and assign formats following the CTA diversification rules from `content-seo`.  
 - **Responsive breakpoints** — Mobile-first strategy with specific layout changes per breakpoint  
 - **Section variants** — For sections with multiple possible layouts, select the variant and justify why  
 - **Conditional sections** — Sections that only render if data exists (e.g., testimonials section only if reviews were found)  
@@ -191,4 +193,6 @@ A complete, buildable Astro project with all files listed above. Every file must
 10. **Anti-pattern: hero with stock photo placeholder and generic headline.** The hero must use the real H1 from research section 17 and image requirements from section 24.  
 11. **Anti-pattern: identical section spacing and backgrounds.** Use the dark/light rhythm from Phase 1 to create visual variety.  
 12. **Anti-pattern: CTA that says "Learn More" or "Get Started".** Use the specific CTA text from research section 20.
-13. **Scope boundary.** This agent ONLY performs architecture planning, visual system definition, data extraction, and Astro scaffolding. It does NOT run UX polish, component enhancement, code audit, performance audit, or fix application. Those belong to `rebuild-landing` and `error-finder`. If you find yourself planning phases beyond building the Astro project, stop immediately. You have exactly 4 skills: `landing-architecture`, `visual-system`, `data-extractor`, `astro-builder`.
+13. **Anti-pattern: ignoring layout variant.** If the research document says Layout variant `W-story` and the built hero is a centered text block with a button, the build has failed. The variant ID is not a suggestion — it's a structural requirement that flows through architecture → visual system → builder.  
+14. **Anti-pattern: uniform CTA formats.** If every CTA in the built page is a `<button>` styled the same way, the CTA strategy from content-seo has been ignored. Each CTA must use its assigned format.
+15. **Scope boundary.** This agent ONLY performs architecture planning, visual system definition, data extraction, and Astro scaffolding. It does NOT run UX polish, component enhancement, code audit, performance audit, or fix application. Those belong to `rebuild-landing` and `error-finder`. If you find yourself planning phases beyond building the Astro project, stop immediately. You have exactly 4 skills: `landing-architecture`, `visual-system`, `data-extractor`, `astro-builder`.
